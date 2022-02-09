@@ -1,0 +1,15 @@
+--- a/UPower.conf
++++ b/UPower.conf
+@@ -36,7 +36,11 @@
+ # logind.conf(5).
+ #
+ # default=false
+-IgnoreLid=false
++# HHH: February 7, 2022: I'm commenting below 1 line out and add a new line
++#                        below that to make UPower completely ignore laptop
++#                        lid close event
++#IgnoreLid=false
++IgnoreLid=true
+ 
+ # Policy for warnings and action based on battery levels
+ #

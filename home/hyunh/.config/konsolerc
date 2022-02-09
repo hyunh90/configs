@@ -1,0 +1,11 @@
+[Desktop Entry]
+DefaultProfile=Hyun's.profile
+
+[KonsoleWindow]
+RememberWindowSize=false
+
+[MainWindow]
+ToolBarsMovable=Disabled
+
+[UiSettings]
+ColorScheme=Default
