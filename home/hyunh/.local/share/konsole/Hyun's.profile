@@ -1,5 +1,5 @@
 [Appearance]
-ColorScheme=Breath
+ColorScheme=Breeze
 Font=Fira Code Retina,16,-1,5,53,0,0,0,0,0,Regular
 
 [General]

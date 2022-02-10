@@ -1,0 +1,9 @@
+[commit]
+	gpgsign = true
+[core]
+	autocrlf = input
+	editor = code --new-window --wait
+[user]
+	email = hyun@caffeinated.codes
+	name = Hyun Hwang
+	signingkey = 0x2DADE0D6861E9026
