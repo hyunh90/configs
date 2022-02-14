@@ -11,7 +11,7 @@ backup_and_report() {
     2="${2:-.old}"
     3="${3:-false}"
 
-    if [ "${3}" -eq "true" ]; then
+    if [ "${3}" = "true" ]; then
         cp "${1}" "${1}${2}"
     else
         mv "${1}" "${1}${2}"
@@ -29,7 +29,7 @@ install_and_report() {
     3="${3?}"
     4="${4:-false}"
 
-    if [ "${4}" -eq "true" ]; then
+    if [ "${4}" = "true" ]; then
         cp "${1}/${3}" "${2}/${3}"
     else
         ln -s "${1}/${3}" "${2}/${3}"
@@ -46,6 +46,7 @@ exit 99
 if [ `id -u` -eq 0 ]; then
     echo "do NOT run this as root (or via sudo)"
     exit 1
+fi
 
 # Prevent unnecessary reruns
 if [ -e "${HOME}/.hhh_configs_installed" ]; then
