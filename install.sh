@@ -40,9 +40,10 @@ install_and_report() {
         ln -s "${1}/${3}" "${2}/${3}"
     fi
 
-    echo "* created: ${2}/${3}"
+    echo "* installed: ${2}/${3}"
 }
 
+# TODO: remove this later
 # no args
 inhibitor() {
     ####################################
@@ -54,6 +55,9 @@ inhibitor() {
 
 # no args
 safety_check() {
+    # TODO: remove this later
+    inhibitor
+
     # Should not be root
     if [ `id -u` -eq 0 ]; then
         echo "do NOT run this as root (i.e., via sudo)"
@@ -71,7 +75,9 @@ safety_check() {
 
 # no args
 setup_etc() {
-    setup_etc_run_commands
+    echo "Setting up system-wide stuff; might ask root password."
+
+    setup_etc_run_commands_preinstall
     # TODO: process things under etc/ before going over home/ stuff
     #       for this I need a way to ask (future-)me whether I'd like to install
     #       these power settings
@@ -80,15 +86,24 @@ setup_etc() {
 }
 
 # no args
-setup_etc_run_commands() {
-    echo "Configuring system-wide keyboard stuff; might ask root password."
+setup_etc_run_commands_preinstall() {
+    echo "# Keyboard: Set Colemak as system-wide default"
     sudo localectl set-keymap us-colemak
     sudo localectl set-x11-keymap us pc104 colemak
 }
 
 # no args
+setup_home() {
+    echo "Setting up user home stuff"
+
+    setup_home_backup_files
+    setup_home_install_files
+    setup_home_run_commands_postinstall
+}
+
+# no args
 setup_home_backup_files() {
-    echo "Backup some of the existing stuff:"
+    echo "# Backup existing configs"
 
     # .bashrc
     backup_and_report "${SYSTEM_HOME}/.bashrc" .bak true
@@ -113,7 +128,7 @@ setup_home_backup_files() {
 
 # no args
 setup_home_install_files() {
-    echo "Install new stuff:"
+    echo "# Install new configs"
 
     # .bashrc
     cat "${PACKAGE_HOME}/.bashrc.addendum" >> "${SYSTEM_HOME}/.bashrc"
@@ -152,7 +167,8 @@ setup_home_install_files() {
 }
 
 # no args
-setup_home_run_commands() {
+setup_home_run_commands_postinstall() {
+    echo ""
     # TODO: Integrate oh-my-zsh installation with --unattended --keep-zshrc
     # TODO: Install plugins:
     #       https://github.com/zsh-users/zsh-autosuggestions
@@ -167,3 +183,8 @@ mark_done() {
     # Mark installation done
     touch "${SYSTEM_HOME}/.hhh_configs_installed"
 }
+
+safety_check
+setup_etc
+setup_home
+mark_done
