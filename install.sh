@@ -58,6 +58,12 @@ if [ -e "${SYSTEM_HOME}/.hhh_configs_installed" ]; then
 fi
 
 # TODO: process things under etc/ before going over home/ stuff
+#       for this I need a way to ask (future-)me whether I'd like to install
+#       these power settings
+
+echo "Configuring system-wide keyboard stuff; might ask root password."
+sudo localectl set-keymap us-colemak
+sudo localectl set-x11-keymap us pc104 colemak
 
 echo "Backup some of the existing stuff:"
 # .bashrc
