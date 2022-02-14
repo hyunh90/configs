@@ -40,14 +40,19 @@ install_and_report() {
     echo "* created: ${2}/${3}"
 }
 
+# no args
+inhibitor() {
 ####################################
 echo "do not use yet; needs testing"
 exit 99
 ####################################
+}
 
+# no args
+safety_check() {
 # Should not be root
 if [ `id -u` -eq 0 ]; then
-    echo "do NOT run this as root (or via sudo)"
+    echo "do NOT run this as root (i.e., via sudo)"
     exit 1
 fi
 
@@ -56,15 +61,27 @@ if [ -e "${SYSTEM_HOME}/.hhh_configs_installed" ]; then
     echo "already installed."
     exit 2
 fi
+}
 
+# no args
+setup_etc() {
+    setup_etc_run_commands
 # TODO: process things under etc/ before going over home/ stuff
 #       for this I need a way to ask (future-)me whether I'd like to install
 #       these power settings
+    #setup_etc_backup_files
+    #setup_etc_install_files
+}
 
+# no args
+setup_etc_run_commands() {
 echo "Configuring system-wide keyboard stuff; might ask root password."
 sudo localectl set-keymap us-colemak
 sudo localectl set-x11-keymap us pc104 colemak
+}
 
+# no args
+setup_home_backup_files() {
 echo "Backup some of the existing stuff:"
 # .bashrc
 backup_and_report "${SYSTEM_HOME}/.bashrc" .bak true
@@ -79,7 +96,10 @@ backup_and_report "${SYSTEM_HOME}/.p10k.zsh"
 backup_and_report "${SYSTEM_HOME}/.ssh"
 # .zshrc
 backup_and_report "${SYSTEM_HOME}/.zshrc"
+}
 
+# no args
+setup_home_install_files() {
 echo "Install new stuff:"
 # .bashrc
 cat "${PACKAGE_HOME}/.bashrc.addendum" >> "${SYSTEM_HOME}/.bashrc"
@@ -109,7 +129,10 @@ chmod 600 "${PACKAGE_HOME}/.ssh/house.hwang.keys.pgp-ssh@hyun+public.txt"
 install_and_report "${PACKAGE_HOME}" "${SYSTEM_HOME}" .ssh
 # .zshrc
 install_and_report "${PACKAGE_HOME}" "${SYSTEM_HOME}" .zshrc
+}
 
+# no args
+setup_home_run_commands() {
 # TODO: Integrate oh-my-zsh installation with --unattended --keep-zshrc
 # TODO: Install plugins:
 #       https://github.com/zsh-users/zsh-autosuggestions
@@ -117,6 +140,10 @@ install_and_report "${PACKAGE_HOME}" "${SYSTEM_HOME}" .zshrc
 #       https://github.com/zsh-users/zsh-history-substring-search
 #       https://github.com/zsh-users/zsh-syntax-highlighting
 # TODO: Integrate powerlevel10k theme installation
+}
 
+# no args
+mark_done() {
 # Mark installation done
 touch "${SYSTEM_HOME}/.hhh_configs_installed"
+}
